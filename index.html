@@ -325,6 +325,22 @@
         yesBtn.style.marginRight = "14px";
       }
 
+      function clearEscapeState() {
+        yesBtn.classList.remove("escaped");
+        yesBtn.style.position = "static";
+        yesBtn.style.left = "auto";
+        yesBtn.style.top = "auto";
+        yesBtn.style.width = "auto";
+        yesBtn.style.height = "auto";
+        yesBtn.style.transform = "none";
+        yesBtn.style.marginRight = "14px";
+        bubble.classList.remove("show", "ride");
+        bubble.style.left = "";
+        bubble.style.top = "";
+        bubble.style.right = "";
+        arrow.classList.remove("show");
+      }
+
       function showFinalMessage() {
         question.textContent = "";
         answers.style.display = "none";
@@ -363,6 +379,7 @@
       noBtn.addEventListener("click", () => {
         mode = "confirm";
         question.textContent = "Czy na pewno?";
+        clearEscapeState();
         answers.classList.add("confirm");
         lockYesButton();
         noBtn.textContent = "Nie";
