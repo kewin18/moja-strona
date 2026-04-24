@@ -60,6 +60,24 @@
         min-height: 150px;
       }
 
+      .answers.confirm {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .result {
+        display: none;
+        margin-top: 10px;
+        font-size: clamp(1.4rem, 4vw, 2rem);
+        font-weight: 700;
+      }
+
+      .result.show {
+        display: block;
+      }
+
       button {
         min-width: 120px;
         border: 0;
@@ -114,6 +132,7 @@
         <button class="yes" id="yesBtn" type="button">Tak</button>
         <button class="no" id="noBtn" type="button">Nie</button>
       </div>
+      <div class="result" id="result"></div>
     </main>
 
     <script>
@@ -121,8 +140,14 @@
       const yesBtn = document.getElementById("yesBtn");
       const noBtn = document.getElementById("noBtn");
       const answers = document.querySelector(".answers");
+      const result = document.getElementById("result");
+      let mode = "initial";
 
       function moveYesButton() {
+        if (mode !== "initial") {
+          return;
+        }
+
         const padding = 8;
         const gap = 24;
         const area = answers.getBoundingClientRect();
@@ -138,24 +163,66 @@
         yesBtn.style.transform = "none";
       }
 
+      function lockYesButton() {
+        yesBtn.style.position = "static";
+        yesBtn.style.left = "auto";
+        yesBtn.style.top = "auto";
+        yesBtn.style.transform = "none";
+        yesBtn.style.marginRight = "14px";
+      }
+
+      function showFinalMessage() {
+        question.textContent = "";
+        answers.style.display = "none";
+        result.textContent = "😊 To dawaj na cmika";
+        result.classList.add("show");
+      }
+
       moveYesButton();
 
       yesBtn.addEventListener("pointerdown", (event) => {
+        if (mode !== "initial") {
+          return;
+        }
+
         event.preventDefault();
         moveYesButton();
       });
 
-      yesBtn.addEventListener("mouseenter", moveYesButton);
-      yesBtn.addEventListener("focus", moveYesButton);
+      yesBtn.addEventListener("mouseenter", () => {
+        if (mode === "initial") {
+          moveYesButton();
+        }
+      });
+
+      yesBtn.addEventListener("focus", () => {
+        if (mode === "initial") {
+          moveYesButton();
+        }
+      });
 
       noBtn.addEventListener("click", () => {
+        mode = "confirm";
         question.textContent = "Czy na pewno?";
-        moveYesButton();
+        answers.classList.add("confirm");
+        lockYesButton();
         noBtn.textContent = "Nie";
+        noBtn.style.position = "static";
+        noBtn.style.left = "auto";
+        noBtn.style.top = "auto";
+        noBtn.style.transform = "none";
+      });
+
+      yesBtn.addEventListener("click", () => {
+        if (mode === "confirm") {
+          showFinalMessage();
+        }
       });
 
       window.addEventListener("resize", () => {
-        moveYesButton();
+        if (mode === "initial") {
+          moveYesButton();
+        }
       });
     </script>
   </body>
