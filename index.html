@@ -73,9 +73,8 @@
 
       .yes {
         position: absolute;
-        left: 50%;
+        left: 24px;
         top: 50%;
-        transform: translate(-130%, -50%);
         background: linear-gradient(135deg, var(--accent), var(--accent-2));
         color: #111827;
         box-shadow: 0 16px 34px rgba(245, 158, 11, 0.24);
@@ -83,9 +82,9 @@
 
       .no {
         position: absolute;
-        left: 50%;
+        right: 24px;
         top: 50%;
-        transform: translate(30%, -50%);
+        transform: translateY(-50%);
         background: rgba(255, 255, 255, 0.08);
         color: var(--text);
         border: 1px solid rgba(255, 255, 255, 0.12);
@@ -125,9 +124,11 @@
 
       function moveYesButton() {
         const padding = 8;
+        const gap = 24;
         const area = answers.getBoundingClientRect();
         const button = yesBtn.getBoundingClientRect();
-        const maxX = Math.max(padding, area.width - button.width - padding);
+        const noButton = noBtn.getBoundingClientRect();
+        const maxX = Math.max(padding, area.width - noButton.width - button.width - gap - padding);
         const maxY = Math.max(padding, area.height - button.height - padding);
         const x = padding + Math.random() * maxX;
         const y = padding + Math.random() * maxY;
@@ -137,14 +138,7 @@
         yesBtn.style.transform = "none";
       }
 
-      function keepNoInPlace() {
-        noBtn.style.left = "50%";
-        noBtn.style.top = "50%";
-        noBtn.style.transform = "translate(30%, -50%)";
-      }
-
       moveYesButton();
-      keepNoInPlace();
 
       yesBtn.addEventListener("pointerdown", (event) => {
         event.preventDefault();
@@ -162,7 +156,6 @@
 
       window.addEventListener("resize", () => {
         moveYesButton();
-        keepNoInPlace();
       });
     </script>
   </body>
