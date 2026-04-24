@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jesteś obrażona?</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f172a;
+        --card: rgba(255, 255, 255, 0.08);
+        --border: rgba(255, 255, 255, 0.14);
+        --text: #f8fafc;
+        --accent: #f59e0b;
+        --accent-2: #fb7185;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(245, 158, 11, 0.18), transparent 28%),
+          radial-gradient(circle at bottom right, rgba(251, 113, 133, 0.16), transparent 24%),
+          linear-gradient(160deg, #020617, var(--bg));
+        padding: 24px;
+      }
+
+      .card {
+        width: min(680px, 100%);
+        padding: 36px;
+        border-radius: 30px;
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0 0 24px;
+        font-size: clamp(2.6rem, 8vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+      }
+
+      .answers {
+        position: relative;
+        min-height: 150px;
+      }
+
+      button {
+        min-width: 120px;
+        border: 0;
+        border-radius: 999px;
+        padding: 14px 24px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+      }
+
+      .yes {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-130%, -50%);
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #111827;
+        box-shadow: 0 16px 34px rgba(245, 158, 11, 0.24);
+      }
+
+      .no {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(30%, -50%);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 24px;
+          border-radius: 24px;
+        }
+
+        button {
+          min-width: 100px;
+          padding: 12px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1 id="question">Jesteś obrażona?</h1>
+      <div class="answers" aria-label="Odpowiedzi">
+        <button class="yes" id="yesBtn" type="button">Tak</button>
+        <button class="no" id="noBtn" type="button">Nie</button>
+      </div>
+    </main>
+
+    <script>
+      const question = document.getElementById("question");
+      const yesBtn = document.getElementById("yesBtn");
+      const noBtn = document.getElementById("noBtn");
+      const answers = document.querySelector(".answers");
+
+      function moveYesButton() {
+        const padding = 8;
+        const area = answers.getBoundingClientRect();
+        const button = yesBtn.getBoundingClientRect();
+        const maxX = Math.max(padding, area.width - button.width - padding);
+        const maxY = Math.max(padding, area.height - button.height - padding);
+        const x = padding + Math.random() * maxX;
+        const y = padding + Math.random() * maxY;
+
+        yesBtn.style.left = `${x}px`;
+        yesBtn.style.top = `${y}px`;
+        yesBtn.style.transform = "none";
+      }
+
+      function keepNoInPlace() {
+        noBtn.style.left = "50%";
+        noBtn.style.top = "50%";
+        noBtn.style.transform = "translate(30%, -50%)";
+      }
+
+      moveYesButton();
+      keepNoInPlace();
+
+      yesBtn.addEventListener("pointerdown", (event) => {
+        event.preventDefault();
+        moveYesButton();
+      });
+
+      yesBtn.addEventListener("mouseenter", moveYesButton);
+      yesBtn.addEventListener("focus", moveYesButton);
+
+      noBtn.addEventListener("click", () => {
+        question.textContent = "Czy na pewno?";
+        moveYesButton();
+        noBtn.textContent = "Nie";
+      });
+
+      window.addEventListener("resize", () => {
+        moveYesButton();
+        keepNoInPlace();
+      });
+    </script>
+  </body>
+</html>
