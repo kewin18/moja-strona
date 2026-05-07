@@ -91,35 +91,56 @@
       pointer-events: none;
       z-index: 2;
       opacity: 0;
-      transform: scale(0.96);
+      transform: scale(0.9);
       background:
-        radial-gradient(circle at 50% 42%, rgba(196, 181, 253, 0.26), transparent 26%),
-        radial-gradient(circle at 50% 42%, rgba(168, 85, 247, 0.18), transparent 44%),
-        radial-gradient(circle at 50% 42%, rgba(139, 92, 246, 0.12), transparent 62%);
-      transition: opacity 180ms ease, transform 420ms ease;
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.22), transparent 16%),
+        radial-gradient(circle at 50% 42%, rgba(196, 181, 253, 0.34), transparent 28%),
+        radial-gradient(circle at 50% 42%, rgba(168, 85, 247, 0.22), transparent 48%),
+        radial-gradient(circle at 50% 42%, rgba(139, 92, 246, 0.14), transparent 68%);
+      transition: opacity 120ms ease, transform 520ms ease;
     }
 
     .landing-launch::before {
       content: "";
       position: absolute;
-      inset: 18% 10% auto;
-      height: 220px;
+      inset: 12% 6% auto;
+      height: 280px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow:
+        0 0 0 18px rgba(168, 85, 247, 0.06),
+        0 0 110px rgba(168, 85, 247, 0.26);
+      opacity: 0.18;
+      transform: scale(0.84);
+    }
+
+    .landing-launch::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 44%;
+      width: min(78vw, 420px);
+      height: min(78vw, 420px);
+      transform: translate(-50%, -50%) scale(0.72);
       border-radius: 999px;
       border: 1px solid rgba(196, 181, 253, 0.18);
       box-shadow:
-        0 0 0 16px rgba(168, 85, 247, 0.04),
-        0 0 80px rgba(168, 85, 247, 0.14);
-      opacity: 0.45;
-      transform: scale(0.92);
+        0 0 0 20px rgba(196, 181, 253, 0.05),
+        0 0 120px rgba(168, 85, 247, 0.24);
+      opacity: 0.12;
     }
 
     .landing.is-starting .landing-launch {
       opacity: 1;
-      transform: scale(1.08);
+      transform: scale(1.18);
     }
 
     .landing.is-starting .landing-launch::before {
-      animation: launch-ring 420ms ease-out both;
+      animation: launch-ring 560ms ease-out both;
+    }
+
+    .landing.is-starting .landing-launch::after {
+      animation: launch-ring-outer 560ms ease-out both;
     }
 
     .landing-aurora {
@@ -376,14 +397,14 @@
     }
 
     .landing.is-starting .hero {
-      transform: translateY(-16px) scale(0.965);
-      opacity: 0.35;
-      filter: blur(4px);
+      transform: translateY(-20px) scale(0.92);
+      opacity: 0.2;
+      filter: blur(8px);
     }
 
     .landing.is-starting .landing-actions {
-      transform: translateY(18px) scale(0.94);
-      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      opacity: 0.05;
     }
 
     .landing.is-starting .how-card {
@@ -392,7 +413,20 @@
     }
 
     .landing.is-starting .button {
-      transform: scale(0.92);
+      transform: scale(1.06);
+    }
+
+    .landing.is-starting #landingStartBtn {
+      box-shadow:
+        0 0 0 12px rgba(168, 85, 247, 0.08),
+        0 22px 48px rgba(0, 0, 0, 0.28);
+      animation: start-button-pop 560ms ease-out both;
+    }
+
+    .landing.is-starting .landing-signals {
+      opacity: 0.08;
+      transform: translateY(14px) scale(0.94);
+      transition: opacity 180ms ease, transform 520ms ease;
     }
 
     .landing .eyebrow {
@@ -3017,6 +3051,29 @@
       }
     }
 
+    @keyframes launch-ring-outer {
+      0% {
+        transform: translate(-50%, -50%) scale(0.72);
+        opacity: 0.12;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.22);
+        opacity: 0;
+      }
+    }
+
+    @keyframes start-button-pop {
+      0% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.12);
+      }
+      100% {
+        transform: scale(1.06);
+      }
+    }
+
     .empty-state {
       display: grid;
       place-items: center;
@@ -4472,7 +4529,7 @@
       landingStartBtn.disabled = true;
       window.setTimeout(() => {
         setScreenMode('setup');
-      }, 420);
+      }, 560);
     });
 
     setupBackBtn.addEventListener('click', () => {
