@@ -408,17 +408,12 @@
     }
 
     .landing-signals {
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      bottom: clamp(124px, 20vh, 190px);
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
-      width: auto;
-      margin: 0 auto;
+      width: 100%;
+      margin: 8px auto 0;
       max-width: 560px;
-      z-index: 1;
     }
 
     .landing-signal {
@@ -3086,27 +3081,24 @@
         <p class="landing-subtitle">Zagraj szybko, zgaduj sprytnie i nie daj się wyłapać.</p>
       </div>
 
+      <div class="landing-actions">
+        <button class="button" id="landingStartBtn" type="button">Zacznij</button>
+        <button class="button secondary" id="landingHowBtn" type="button">Jak grac</button>
+      </div>
+
       <div class="landing-signals" aria-hidden="true">
         <div class="landing-signal">
           <div class="landing-signal-icon">◌</div>
           <span>Ukryj</span>
-          <small>oszustów w tłumie</small>
         </div>
         <div class="landing-signal">
           <div class="landing-signal-icon">✦</div>
           <span>Zgaduj</span>
-          <small>z tajemniczego słowa</small>
         </div>
         <div class="landing-signal">
           <div class="landing-signal-icon">?</div>
           <span>Wykryj</span>
-          <small>kto gra inaczej</small>
         </div>
-      </div>
-
-      <div class="landing-actions">
-        <button class="button" id="landingStartBtn" type="button">Zacznij</button>
-        <button class="button secondary" id="landingHowBtn" type="button">Jak grac</button>
       </div>
 
       <div class="how-card" id="howCard">
