@@ -1674,6 +1674,16 @@
       white-space: nowrap;
     }
 
+    .name-editor-done {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 12px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
     .save-toast {
       position: fixed;
       left: 50%;
@@ -3636,6 +3646,8 @@
             </div>
           </div>
 
+          <button class="button primary name-editor-done" id="nameEditorDoneBtn" type="button">Gotowe</button>
+
           <div class="name-list" id="nameList"></div>
 
           <div class="name-editor-actions">
@@ -3787,6 +3799,7 @@
     const resetBtn = document.getElementById('resetBtn');
     const groupNameInput = document.getElementById('groupNameInput');
     const saveGroupBtn = document.getElementById('saveGroupBtn');
+    const nameEditorDoneBtn = document.getElementById('nameEditorDoneBtn');
     const savedGroupsCard = document.getElementById('savedGroupsCard');
     const savedGroupsToggle = document.getElementById('savedGroupsToggle');
     const savedGroupsBody = document.getElementById('savedGroupsBody');
@@ -4725,6 +4738,7 @@
     });
     groupNameInput.addEventListener('input', saveSetup);
     saveGroupBtn.addEventListener('click', saveCurrentGroup);
+    nameEditorDoneBtn.addEventListener('click', closeNameEditor);
     savedGroupsToggle.addEventListener('click', () => {
       setSavedGroupsOpen(!savedGroupsCard.classList.contains('is-open'));
     });
