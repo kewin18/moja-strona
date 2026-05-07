@@ -544,6 +544,14 @@
       margin-bottom: 10px;
     }
 
+    .settings-head .back-button {
+      width: fit-content;
+      min-width: 0;
+      min-height: 44px;
+      padding: 0 14px;
+      font-size: 0.98rem;
+    }
+
     .settings-head h2 {
       font-size: clamp(1.18rem, 4.2vw, 1.55rem);
       letter-spacing: -0.05em;
@@ -3163,6 +3171,7 @@
     <section class="screen" id="setupScreen">
       <div class="setup">
         <div class="settings-head">
+          <button class="back-button" id="setupBackBtn" type="button" aria-label="Wroc na start">← <span>Start</span></button>
           <h2>Ustawienia gry</h2>
         </div>
 
@@ -3516,6 +3525,7 @@
     const landingScreen = document.getElementById('landingScreen');
     const landingStartBtn = document.getElementById('landingStartBtn');
     const landingHowBtn = document.getElementById('landingHowBtn');
+    const setupBackBtn = document.getElementById('setupBackBtn');
     const howCard = document.getElementById('howCard');
     const setupScreen = document.getElementById('setupScreen');
     const gameScreen = document.getElementById('gameScreen');
@@ -4463,6 +4473,11 @@
       window.setTimeout(() => {
         setScreenMode('setup');
       }, 420);
+    });
+
+    setupBackBtn.addEventListener('click', () => {
+      howCard.classList.remove('active');
+      setScreenMode('landing');
     });
 
     landingHowBtn.addEventListener('click', () => {
