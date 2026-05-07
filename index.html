@@ -1535,6 +1535,7 @@
       background: transparent;
       color: inherit;
       text-align: left;
+      cursor: pointer;
     }
 
     .group-save-head,
@@ -1658,12 +1659,46 @@
       text-align: center;
     }
 
+    .saved-groups-hint {
+      color: rgba(226, 232, 240, 0.72);
+      font-size: 0.72rem;
+      line-height: 1.35;
+      padding: 0 2px 2px;
+    }
+
     .save-group-btn {
       min-height: 44px;
       padding: 0 14px;
       border-radius: 14px;
       font-size: 0.84rem;
       white-space: nowrap;
+    }
+
+    .save-toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      z-index: 1000;
+      transform: translate(-50%, 16px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(196, 181, 253, 0.22);
+      background: rgba(15, 23, 42, 0.94);
+      color: #f8fafc;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      box-shadow:
+        0 16px 34px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .save-toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
     .name-editor-actions {
@@ -3576,7 +3611,7 @@
           <div class="group-panels">
             <div class="group-save-card">
               <div class="group-save-head">
-                <strong>Zapisz grupe</strong>
+                <strong>Zapisz grupę</strong>
                 <span>Nazwij ekipę i wracaj do niej później jednym tapnięciem.</span>
               </div>
               <div class="group-save-row">
@@ -3588,14 +3623,15 @@
             <div class="saved-groups-card" id="savedGroupsCard">
               <button class="saved-groups-toggle" id="savedGroupsToggle" type="button" aria-expanded="false">
                 <div class="saved-groups-head">
-                  <strong>Zapisane grupy</strong>
-                  <span>Dotknij, aby rozwinąć listę zapisanych ekip.</span>
+                  <strong>Wczytaj ekipę</strong>
+                  <span>Dotknij grupy, żeby ją od razu wczytać.</span>
                 </div>
                 <div class="saved-groups-chev" aria-hidden="true">⌄</div>
               </button>
               <div class="saved-groups-body hidden" id="savedGroupsBody">
+                <div class="saved-groups-hint">Najpierw zapisz ekipę wyżej. Potem wybierz ją tutaj jednym tapnięciem.</div>
                 <div class="saved-groups-list" id="savedGroupsList"></div>
-                <div class="saved-groups-empty" id="savedGroupsEmpty">Nie masz jeszcze zapisanych grup.</div>
+                <div class="saved-groups-empty" id="savedGroupsEmpty">Brak zapisanych grup. Zapisz ekipę wyżej, a pojawi się tutaj.</div>
               </div>
             </div>
           </div>
@@ -3711,10 +3747,12 @@
           <div class="results-summary-subtitle" id="resultsSummarySubtitle">Przewin w dol, aby zobaczyc rozpiske graczy.</div>
         </div>
 
-        <div class="results-grid" id="resultsGrid"></div>
+      <div class="results-grid" id="resultsGrid"></div>
       </div>
     </section>
   </main>
+
+  <div class="save-toast" id="saveToast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <script>
     const playerCountButton = document.getElementById('playerCountButton');
@@ -3754,6 +3792,7 @@
     const savedGroupsBody = document.getElementById('savedGroupsBody');
     const savedGroupsList = document.getElementById('savedGroupsList');
     const savedGroupsEmpty = document.getElementById('savedGroupsEmpty');
+    const saveToast = document.getElementById('saveToast');
     const playerView = document.getElementById('playerView');
     const playerCard = document.getElementById('playerCard');
     const playerMask = document.getElementById('playerMask');
@@ -3900,6 +3939,22 @@
       savedGroupsToggle.setAttribute('aria-expanded', String(next));
     }
 
+    function showSaveToast(message) {
+      if (!saveToast) return;
+      saveToast.textContent = message;
+      saveToast.classList.add('is-visible');
+      if (saveToast.hideTimer) {
+        window.clearTimeout(saveToast.hideTimer);
+      }
+      saveToast.hideTimer = window.setTimeout(() => {
+        saveToast.classList.remove('is-visible');
+      }, 1800);
+    }
+
+    function showErrorToast(message) {
+      showSaveToast(message);
+    }
+
     function deleteSavedGroup(index) {
       const groups = readSavedGroups();
       groups.splice(index, 1);
@@ -3922,11 +3977,11 @@
       const name = groupNameInput.value.trim();
       const players = collectNames().filter(Boolean);
       if (!name) {
-        alert('Podaj nazwę grupy.');
+        showErrorToast('Podaj nazwę grupy.');
         return;
       }
       if (players.length < 3) {
-        alert('Dodaj przynajmniej 3 graczy zanim zapiszesz grupę.');
+        showErrorToast('Potrzebujesz minimum 3 graczy.');
         return;
       }
       const groups = readSavedGroups();
@@ -3947,6 +4002,7 @@
       writeSavedGroups(groups.slice(0, 12));
       renderSavedGroups();
       saveSetup();
+      showSaveToast(`Zapisano grupę: ${name}`);
     }
 
     function saveSetup() {
@@ -4505,7 +4561,7 @@
     function startGame() {
       const players = collectNames().filter(Boolean);
       if (players.length < 3) {
-        alert('Dodaj przynajmniej 3 graczy.');
+        showErrorToast('Potrzebujesz minimum 3 graczy.');
         return;
       }
       if (!state.categoryIds.length) {
