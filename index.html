@@ -130,6 +130,32 @@
       justify-items: center;
     }
 
+    .landing .hero,
+    .landing-actions,
+    .how-card {
+      transition: transform 320ms ease, opacity 320ms ease, filter 320ms ease;
+    }
+
+    .landing.is-starting .hero {
+      transform: translateY(-10px) scale(0.985);
+      opacity: 0.55;
+      filter: blur(1px);
+    }
+
+    .landing.is-starting .landing-actions {
+      transform: translateY(12px) scale(0.98);
+      opacity: 0.1;
+    }
+
+    .landing.is-starting .how-card {
+      transform: translateY(16px);
+      opacity: 0;
+    }
+
+    .landing.is-starting .button {
+      transform: scale(0.96);
+    }
+
     .landing .eyebrow {
       display: none;
     }
@@ -3421,6 +3447,10 @@
     }
 
     function setScreenMode(mode) {
+      if (mode !== 'landing') {
+        landingScreen.classList.remove('is-starting');
+        landingStartBtn.disabled = false;
+      }
       landingScreen.classList.toggle('hidden', mode !== 'landing');
       setupScreen.classList.toggle('hidden', mode !== 'setup');
       gameScreen.classList.toggle('active', mode === 'game');
@@ -3917,7 +3947,12 @@
     });
 
     landingStartBtn.addEventListener('click', () => {
-      setScreenMode('setup');
+      if (landingScreen.classList.contains('is-starting')) return;
+      landingScreen.classList.add('is-starting');
+      landingStartBtn.disabled = true;
+      window.setTimeout(() => {
+        setScreenMode('setup');
+      }, 260);
     });
 
     landingHowBtn.addEventListener('click', () => {
