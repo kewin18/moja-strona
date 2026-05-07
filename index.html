@@ -407,6 +407,65 @@
       animation: landing-title-in 700ms ease 140ms both, subtitle-bob 4.2s ease-in-out infinite;
     }
 
+    .landing-signals {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      width: 100%;
+      margin: 8px auto 0;
+      max-width: 460px;
+    }
+
+    .landing-signal {
+      display: grid;
+      gap: 5px;
+      justify-items: center;
+      padding: 12px 10px 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(196, 181, 253, 0.14);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+      box-shadow:
+        0 12px 26px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      animation: signal-float 4.2s ease-in-out infinite;
+    }
+
+    .landing-signal:nth-child(2) {
+      animation-delay: -0.8s;
+    }
+
+    .landing-signal:nth-child(3) {
+      animation-delay: -1.6s;
+    }
+
+    .landing-signal-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle, rgba(196, 181, 253, 0.35), rgba(168, 85, 247, 0.08));
+      color: #f8fafc;
+      font-size: 0.92rem;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.18);
+    }
+
+    .landing-signal span {
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(248, 250, 252, 0.82);
+    }
+
+    .landing-signal small {
+      color: rgba(203, 213, 225, 0.78);
+      font-size: 0.72rem;
+      text-align: center;
+      line-height: 1.25;
+    }
+
     .landing .hero::after {
       content: "";
       position: absolute;
@@ -2893,6 +2952,15 @@
       }
     }
 
+    @keyframes signal-float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
     .empty-state {
       display: grid;
       place-items: center;
@@ -3011,6 +3079,24 @@
         <div class="landing-kicker">Party game</div>
         <h1>impostor</h1>
         <p class="landing-subtitle">Zagraj szybko, zgaduj sprytnie i nie daj się wyłapać.</p>
+      </div>
+
+      <div class="landing-signals" aria-hidden="true">
+        <div class="landing-signal">
+          <div class="landing-signal-icon">◌</div>
+          <span>Ukryj</span>
+          <small>oszustów w tłumie</small>
+        </div>
+        <div class="landing-signal">
+          <div class="landing-signal-icon">✦</div>
+          <span>Zgaduj</span>
+          <small>z tajemniczego słowa</small>
+        </div>
+        <div class="landing-signal">
+          <div class="landing-signal-icon">?</div>
+          <span>Wykryj</span>
+          <small>kto gra inaczej</small>
+        </div>
       </div>
 
       <div class="landing-actions">
