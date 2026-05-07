@@ -4422,6 +4422,7 @@
       if (window.location.hash === '#nameEditorScreen') {
         history.replaceState(null, '', window.location.pathname + window.location.search);
       }
+      setScreenMode('setup');
       syncNameEditorFromHash();
     }
 
